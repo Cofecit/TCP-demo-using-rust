@@ -8,13 +8,18 @@ pub fn start_client(address: String) -> std::io::Result<()> {
 
     // send 10 times
     for i in 0..10 {
+        // create a message
         let msg = format!("Hello from client {}", i);
+
+        // write message to server through stream
         stream
             .write(msg.as_bytes())
             .expect("Write into stream failed");
 
+        // read reply message from server through stream
         let mut reader = BufReader::new(&stream);
         let mut buffer: Vec<u8> = Vec::new();
+        // read until encounter a '\n'
         reader
             .read_until(b'\n', &mut buffer)
             .expect("Read from stream failed");
